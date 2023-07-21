@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -6,12 +6,20 @@ import { delCart } from '../Redux/action'
 
 
 const Cart = () => {
+
     const state = useSelector((state)=> state.handleCart)
+    const [quantity,setQuantity]=useState(1)
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", state)
     const dispatch = useDispatch()
 
     const handleClose = (item) => {
         dispatch(delCart(item))
+    }
+    const Increasebtn=()=>{
+        if(quantity >= 1 ){ setQuantity (quantity + 1)}
+    }
+    const decreasebtn=()=>{
+        quantity > 1 ? setQuantity (quantity-1): setQuantity(1)
     }
 
     const cartItems = (cartItem) => {
@@ -25,14 +33,19 @@ const Cart = () => {
                         </div>
                         <div className="col-md-4">
                             <h3>{cartItem.title}</h3>
-                            <p className="lead fw-bold">${cartItem.price}</p>
-                            <button className="btn btn-primary" >
+                            <p className="lead fw-bold">${cartItem.price *quantity}</p>
+                            <div>
+
+                            <button className="btn btn-primary " onClick={()=>Increasebtn()} >
                                 <i className='fa fa-plus'></i>
                             </button>
-                            <input className='input'/>
-                            <button className="btn btn-danger">
+                            <div className='input'> 
+                                {quantity}
+                            </div>
+                            <button className="btn btn-danger" onClick={()=>decreasebtn()}>
                                 <i className='fa fa-minus'></i>
                             </button>
+                            </div>
                         </div>
                     </div>
                 </div>
